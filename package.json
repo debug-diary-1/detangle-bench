@@ -10,7 +10,7 @@
   "dependencies": {
     "@typescript-eslint/parser": "8.70.1",
     "dependency-cruiser": "18.4.0",
-    "detangle": "0.2.0",
+    "detangle": "0.2.1",
     "eslint": "9.39.5",
     "eslint-import-resolver-typescript": "4.4.5",
     "eslint-plugin-import": "2.32.0",
