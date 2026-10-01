@@ -1,0 +1,177 @@
+{
+  "repos": {
+    "vscode": {
+      "label": "VS Code",
+      "commit": "43dd9070f75d527ab38035c0562acbfe9de4209b",
+      "tools": [
+        {
+          "name": "dependency-cruiser",
+          "wall": 37.48080904200001,
+          "cpu": 41.22,
+          "cycles": 154285583800,
+          "rss_mb": 4144.515625,
+          "runs": 5,
+          "found": {
+            "not-to-unresolvable": 811,
+            "no-circular": 1303,
+            "no-orphans": 36
+          }
+        },
+        {
+          "name": "dependency-cruiser (cached)",
+          "wall": 1.108876458999992,
+          "cpu": 1.6099999999999999,
+          "cycles": 4579160291,
+          "rss_mb": 824.390625,
+          "runs": 5,
+          "found": {
+            "not-to-unresolvable": 811,
+            "no-circular": 1303,
+            "no-orphans": 36
+          }
+        },
+        {
+          "name": "madge --circular",
+          "wall": 33.294369958000026,
+          "cpu": 47.96,
+          "cycles": 177244620872,
+          "rss_mb": 696.296875,
+          "runs": 3,
+          "found": {
+            "cycles": 531
+          }
+        },
+        {
+          "name": "ESLint import/no-cycle",
+          "wall": 286.69494970899996,
+          "cpu": 327.46,
+          "cycles": 1227178523344,
+          "rss_mb": 3159.296875,
+          "runs": 1,
+          "found": {
+            "import/no-cycle": 790,
+            "parse error": 8
+          }
+        },
+        {
+          "name": "detangle",
+          "wall": 0.1855590830000001,
+          "cpu": 1.72,
+          "cycles": 5430694090,
+          "rss_mb": 166.625,
+          "runs": 30,
+          "found": {
+            "not-to-unresolvable": 815,
+            "no-circular": 1675,
+            "no-orphans": 32
+          }
+        },
+        {
+          "name": "detangle (cached)",
+          "wall": 0.08624079200000051,
+          "cpu": 0.5,
+          "cycles": 1627072070,
+          "rss_mb": 126.953125,
+          "runs": 30,
+          "found": {
+            "not-to-unresolvable": 815,
+            "no-circular": 1675,
+            "no-orphans": 32
+          }
+        }
+      ]
+    },
+    "excalidraw": {
+      "label": "Excalidraw",
+      "commit": "afed9e6e27dd1cd5cc52857a405f7bea5312d813",
+      "tools": [
+        {
+          "name": "dependency-cruiser",
+          "wall": 1.6170814580000006,
+          "cpu": 2.33,
+          "cycles": 8615550274,
+          "rss_mb": 573.21875,
+          "runs": 5,
+          "found": {
+            "not-to-unresolvable": 556,
+            "no-circular": 1638,
+            "no-orphans": 6
+          }
+        },
+        {
+          "name": "dependency-cruiser (cached)",
+          "wall": 0.42919079100003,
+          "cpu": 0.52,
+          "cycles": 1809648626,
+          "rss_mb": 281.9375,
+          "runs": 5,
+          "found": {
+            "not-to-unresolvable": 556,
+            "no-circular": 1638,
+            "no-orphans": 6
+          }
+        },
+        {
+          "name": "madge --circular",
+          "wall": 3.606827667000005,
+          "cpu": 6.16,
+          "cycles": 22586670895,
+          "rss_mb": 547.046875,
+          "runs": 3,
+          "found": {
+            "cycles": 761
+          }
+        },
+        {
+          "name": "ESLint import/no-cycle",
+          "wall": 7.6585273339999835,
+          "cpu": 11.879999999999999,
+          "cycles": 43857567891,
+          "rss_mb": 818.640625,
+          "runs": 3,
+          "found": {
+            "parse error": 3,
+            "import/no-cycle": 243
+          }
+        },
+        {
+          "name": "detangle",
+          "wall": 0.022968375000000377,
+          "cpu": 0.11,
+          "cycles": 386893542,
+          "rss_mb": 42.671875,
+          "runs": 30,
+          "found": {
+            "not-to-unresolvable": 568,
+            "no-circular": 508,
+            "no-orphans": 6
+          }
+        },
+        {
+          "name": "detangle (cached)",
+          "wall": 0.016904749999999694,
+          "cpu": 0.04,
+          "cycles": 171397644,
+          "rss_mb": 26.640625,
+          "runs": 30,
+          "found": {
+            "not-to-unresolvable": 568,
+            "no-circular": 508,
+            "no-orphans": 6
+          }
+        }
+      ]
+    }
+  },
+  "machine": "Apple M3 Pro (12 cores, 36 GB, Darwin 25.6.0), Node v24.14.1",
+  "date": "2026-10-01",
+  "versions": {
+    "detangle": "0.2.0",
+    "dependency-cruiser": "18.4.0",
+    "madge": "8.0.0",
+    "eslint": "9.39.5",
+    "eslint-plugin-import": "2.32.0",
+    "eslint-import-resolver-typescript": "4.4.5",
+    "typescript": "5.9.3"
+  }
+}

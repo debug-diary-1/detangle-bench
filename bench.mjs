@@ -21,6 +21,16 @@ import { fileURLToPath } from "node:url";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const bin = (name) => path.join(here, "node_modules", ".bin", name);
+// detangle's native binary, from the platform package npm installed. The
+// `detangle` command npm links is a small Node.js launcher that starts this
+// binary; timing that would add Node's startup (~25-30 ms) to every run,
+// which is most of a small project's time.
+const detangleBin = (() => {
+  const platforms = JSON.parse(fs.readFileSync(path.join(here, "node_modules/detangle/platforms.json"), "utf8"));
+  const libc = process.platform === "linux" ? (process.report.getReport().header.glibcVersionRuntime ? "glibc" : "musl") : undefined;
+  const p = platforms.find((p) => p.os === process.platform && p.cpu === process.arch && (p.libc === undefined || p.libc === libc));
+  return path.join(here, "node_modules", p.package, "bin", process.platform === "win32" ? "detangle.exe" : "detangle");
+})();
 const corpora = JSON.parse(fs.readFileSync(path.join(here, "corpora.json"), "utf8"));
 
 const args = process.argv.slice(2);
@@ -41,14 +51,14 @@ const TOOLS = [
   {
     name: "detangle",
     runs: 30,
-    cmd: (c) => [bin("detangle"), "check", c.dir, "-f", "json"],
+    cmd: (c) => [detangleBin, "check", c.dir, "-f", "json"],
     found: (out) => counts(JSON.parse(out), (v) => v.rule),
   },
   {
     name: "detangle (cached)",
     runs: 30,
     cache: true,
-    cmd: (c, cache) => [bin("detangle"), "check", c.dir, "-f", "json", "--cache", cache],
+    cmd: (c, cache) => [detangleBin, "check", c.dir, "-f", "json", "--cache", cache],
     found: (out) => counts(JSON.parse(out), (v) => v.rule),
   },
   {
