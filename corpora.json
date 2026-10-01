@@ -1,0 +1,16 @@
+{
+  "vscode": {
+    "label": "VS Code",
+    "repo": "https://github.com/microsoft/vscode.git",
+    "commit": "43dd9070f75d527ab38035c0562acbfe9de4209b",
+    "dir": "src",
+    "tsconfig": "src/tsconfig.json"
+  },
+  "excalidraw": {
+    "label": "Excalidraw",
+    "repo": "https://github.com/excalidraw/excalidraw.git",
+    "commit": "afed9e6e27dd1cd5cc52857a405f7bea5312d813",
+    "dir": ".",
+    "tsconfig": "tsconfig.json"
+  }
+}
