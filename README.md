@@ -19,7 +19,7 @@ Each tool looks for the problems it's built to find, on the same files, resolvin
 
 | Tool | Version | Command |
 | ---- | ------- | ------- |
-| detangle | 0.2.0 | `detangle check <dir> -f json`: its default rules (cycles, unresolvable imports, undeclared packages, orphans) |
+| detangle | 0.2.1 | `detangle check <dir> -f json`: its default rules (cycles, unresolvable imports, undeclared packages, orphans) |
 | dependency-cruiser | 18.4.0 | `depcruise <dir> --config configs/dependency-cruiser.cjs -T json`: cycles, orphans and unresolvable imports |
 | madge | 8.0.0 | `madge --circular --extensions ts,tsx --ts-config <tsconfig> --json <dir>` |
 | ESLint + eslint-plugin-import | 9.39.5 + 2.32.0 | `eslint --config configs/eslint.config.cjs --no-inline-config <dir>`: `import/no-cycle`, TypeScript resolver 4.4.5 |
@@ -33,29 +33,29 @@ Each tool looks for the problems it's built to find, on the same files, resolvin
 
 ## Results
 
-Apple M3 Pro (12 cores, 36 GB, macOS), Node 24, background apps paused, 2026-10-01; raw data in [`results/2026-10-01-darwin-arm64.json`](results/2026-10-01-darwin-arm64.json).
+Apple M3 Pro (12 cores, 36 GB, macOS), Node 24, background apps paused, 2026-10-02; raw data in [`results/2026-10-02-darwin-arm64.json`](results/2026-10-02-darwin-arm64.json).
 
 **VS Code** (`43dd9070f7`)
 
 | Tool | Wall time (median) | CPU | Peak memory |
 | ---- | ---- | --- | ---- |
-| detangle | 0.186 s | 1.72 s | 167 MB |
-| detangle (cached) | 0.086 s | 0.50 s | 127 MB |
-| dependency-cruiser | 37.5 s | 41.22 s | 4145 MB |
-| dependency-cruiser (cached) | 1.109 s | 1.61 s | 824 MB |
-| madge --circular | 33.3 s | 47.96 s | 696 MB |
-| ESLint import/no-cycle | 286.7 s | 327.46 s | 3159 MB |
+| detangle | 0.177 s | 1.62 s | 156 MB |
+| detangle (cached) | 0.084 s | 0.47 s | 113 MB |
+| dependency-cruiser | 35.2 s | 40.20 s | 4663 MB |
+| dependency-cruiser (cached) | 1.115 s | 1.74 s | 824 MB |
+| madge --circular | 33.8 s | 46.41 s | 704 MB |
+| ESLint import/no-cycle | 289.3 s | 332.63 s | 2683 MB |
 
 **Excalidraw** (`afed9e6e27`)
 
 | Tool | Wall time (median) | CPU | Peak memory |
 | ---- | ---- | --- | ---- |
-| detangle | 0.023 s | 0.11 s | 43 MB |
-| detangle (cached) | 0.017 s | 0.04 s | 27 MB |
-| dependency-cruiser | 1.617 s | 2.33 s | 573 MB |
-| dependency-cruiser (cached) | 0.429 s | 0.52 s | 282 MB |
-| madge --circular | 3.607 s | 6.16 s | 547 MB |
-| ESLint import/no-cycle | 7.659 s | 11.88 s | 819 MB |
+| detangle | 0.023 s | 0.11 s | 41 MB |
+| detangle (cached) | 0.018 s | 0.05 s | 24 MB |
+| dependency-cruiser | 1.692 s | 2.41 s | 572 MB |
+| dependency-cruiser (cached) | 0.442 s | 0.54 s | 284 MB |
+| madge --circular | 2.880 s | 4.85 s | 588 MB |
+| ESLint import/no-cycle | 9.183 s | 14.27 s | 777 MB |
 
 ## How it measures
 
@@ -80,7 +80,7 @@ node parity.mjs excalidraw    # after bench.mjs has cloned it
 
 `parity.mjs` runs dependency-cruiser and detangle on one corpus and compares the imports each reports on cycles, one by one. detangle runs twice: with its defaults, and with type-only imports counted (`cycles_ignore_type_only = false`), the like-for-like setting. Every import only one tool reports is then checked against dependency-cruiser's own dependency graph.
 
-Results, 2026-10-01:
+Results, 2026-10-02:
 
 | | VS Code `src/` | Excalidraw |
 | - | - | - |
