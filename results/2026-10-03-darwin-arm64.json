@@ -1,0 +1,111 @@
+{
+  "repos": {
+    "vscode": {
+      "label": "VS Code",
+      "commit": "43dd9070f75d527ab38035c0562acbfe9de4209b",
+      "tools": [
+        {
+          "name": "detangle",
+          "wall": 0.17397820899999988,
+          "cpu": 1.62,
+          "cycles": 5119517823,
+          "rss_mb": 157.015625,
+          "runs": 30,
+          "found": {
+            "no-undeclared-deps": 5,
+            "not-to-dev-dep": 30,
+            "not-to-unresolvable": 238,
+            "no-circular": 1675,
+            "no-orphans": 32
+          }
+        },
+        {
+          "name": "detangle (cached)",
+          "wall": 0.08093141600000035,
+          "cpu": 0.46,
+          "cycles": 1505049241,
+          "rss_mb": 113.078125,
+          "runs": 30,
+          "found": {
+            "no-undeclared-deps": 5,
+            "not-to-dev-dep": 30,
+            "not-to-unresolvable": 238,
+            "no-circular": 1675,
+            "no-orphans": 32
+          }
+        },
+        {
+          "name": "oxlint import/no-cycle",
+          "wall": 2.483476667000001,
+          "cpu": 27.560000000000002,
+          "cycles": 86073536521,
+          "rss_mb": 1990.09375,
+          "runs": 5,
+          "found": {
+            "import(no-cycle)": 1675,
+            "parse error": 16
+          }
+        }
+      ]
+    },
+    "excalidraw": {
+      "label": "Excalidraw",
+      "commit": "afed9e6e27dd1cd5cc52857a405f7bea5312d813",
+      "tools": [
+        {
+          "name": "detangle",
+          "wall": 0.022151624999998603,
+          "cpu": 0.11,
+          "cycles": 380271032,
+          "rss_mb": 40.828125,
+          "runs": 30,
+          "found": {
+            "no-undeclared-deps": 31,
+            "not-to-dev-dep": 1,
+            "not-to-unresolvable": 26,
+            "no-circular": 508,
+            "no-orphans": 6
+          }
+        },
+        {
+          "name": "detangle (cached)",
+          "wall": 0.01618158300000141,
+          "cpu": 0.05,
+          "cycles": 177200847,
+          "rss_mb": 24.515625,
+          "runs": 30,
+          "found": {
+            "no-undeclared-deps": 31,
+            "not-to-dev-dep": 1,
+            "not-to-unresolvable": 26,
+            "no-circular": 508,
+            "no-orphans": 6
+          }
+        },
+        {
+          "name": "oxlint import/no-cycle",
+          "wall": 0.15376650000000155,
+          "cpu": 0.9199999999999999,
+          "cycles": 2967172890,
+          "rss_mb": 306.671875,
+          "runs": 5,
+          "found": {
+            "import(no-cycle)": 505
+          }
+        }
+      ]
+    }
+  },
+  "machine": "Apple M3 Pro (12 cores, 36 GB, Darwin 25.6.0), Node v24.14.1",
+  "date": "2026-10-03",
+  "versions": {
+    "detangle": "0.2.1",
+    "dependency-cruiser": "18.4.0",
+    "madge": "8.0.0",
+    "oxlint": "1.86.0",
+    "eslint": "9.39.5",
+    "eslint-plugin-import": "2.32.0",
+    "eslint-import-resolver-typescript": "4.4.5",
+    "typescript": "5.9.3"
+  }
+}
