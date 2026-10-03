@@ -45,7 +45,7 @@ Apple M3 Pro (12 cores, 36 GB, macOS), Node 24, background apps paused, 2026-10-
 | dependency-cruiser | 35.2 s | 40.20 s | 4663 MB |
 | dependency-cruiser (cached) | 1.115 s | 1.74 s | 824 MB |
 | madge --circular | 33.8 s | 46.41 s | 704 MB |
-| oxlint import/no-cycle ¹ | 2.483 s | 27.56 s | 1990 MB |
+| oxlint import/no-cycle ¹ | 2.508 s | 27.74 s | 2043 MB |
 | ESLint import/no-cycle | 289.3 s | 332.63 s | 2683 MB |
 
 **Excalidraw** (`afed9e6e27`)
@@ -57,10 +57,10 @@ Apple M3 Pro (12 cores, 36 GB, macOS), Node 24, background apps paused, 2026-10-
 | dependency-cruiser | 1.692 s | 2.41 s | 572 MB |
 | dependency-cruiser (cached) | 0.442 s | 0.54 s | 284 MB |
 | madge --circular | 2.880 s | 4.85 s | 588 MB |
-| oxlint import/no-cycle ¹ | 0.154 s | 0.92 s | 307 MB |
+| oxlint import/no-cycle ¹ | 0.156 s | 0.92 s | 309 MB |
 | ESLint import/no-cycle | 9.183 s | 14.27 s | 777 MB |
 
-¹ Measured 2026-10-03 under the same conditions ([`results/2026-10-03-darwin-arm64.json`](results/2026-10-03-darwin-arm64.json)), with detangle rerun alongside as a check: 0.174 s on VS Code and 0.022 s on Excalidraw, within 3 ms of the 2026-10-02 numbers.
+¹ Measured 2026-10-03 under the same conditions ([`results/2026-10-03-darwin-arm64.json`](results/2026-10-03-darwin-arm64.json)), with detangle rerun alongside as a check: 0.175 s on VS Code and 0.023 s on Excalidraw, within 2 ms of the 2026-10-02 numbers.
 
 ## How it measures
 
