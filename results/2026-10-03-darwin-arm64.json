@@ -6,10 +6,10 @@
       "tools": [
         {
           "name": "detangle",
-          "wall": 0.17397820899999988,
+          "wall": 0.17484733400000005,
           "cpu": 1.62,
-          "cycles": 5119517823,
-          "rss_mb": 157.015625,
+          "cycles": 5130226634,
+          "rss_mb": 159.0625,
           "runs": 30,
           "found": {
             "no-undeclared-deps": 5,
@@ -21,10 +21,10 @@
         },
         {
           "name": "detangle (cached)",
-          "wall": 0.08093141600000035,
-          "cpu": 0.46,
-          "cycles": 1505049241,
-          "rss_mb": 113.078125,
+          "wall": 0.08132066699999996,
+          "cpu": 0.47,
+          "cycles": 1535224182,
+          "rss_mb": 112.90625,
           "runs": 30,
           "found": {
             "no-undeclared-deps": 5,
@@ -36,10 +36,10 @@
         },
         {
           "name": "oxlint import/no-cycle",
-          "wall": 2.483476667000001,
-          "cpu": 27.560000000000002,
-          "cycles": 86073536521,
-          "rss_mb": 1990.09375,
+          "wall": 2.508298500000001,
+          "cpu": 27.74,
+          "cycles": 86760987671,
+          "rss_mb": 2043.34375,
           "runs": 5,
           "found": {
             "import(no-cycle)": 1675,
@@ -54,10 +54,10 @@
       "tools": [
         {
           "name": "detangle",
-          "wall": 0.022151624999998603,
+          "wall": 0.02274404200000208,
           "cpu": 0.11,
-          "cycles": 380271032,
-          "rss_mb": 40.828125,
+          "cycles": 382557819,
+          "rss_mb": 41.140625,
           "runs": 30,
           "found": {
             "no-undeclared-deps": 31,
@@ -69,10 +69,10 @@
         },
         {
           "name": "detangle (cached)",
-          "wall": 0.01618158300000141,
+          "wall": 0.01708820800000103,
           "cpu": 0.05,
-          "cycles": 177200847,
-          "rss_mb": 24.515625,
+          "cycles": 180548815,
+          "rss_mb": 24.4375,
           "runs": 30,
           "found": {
             "no-undeclared-deps": 31,
@@ -84,10 +84,10 @@
         },
         {
           "name": "oxlint import/no-cycle",
-          "wall": 0.15376650000000155,
+          "wall": 0.15553312500000174,
           "cpu": 0.9199999999999999,
-          "cycles": 2967172890,
-          "rss_mb": 306.671875,
+          "cycles": 2980689024,
+          "rss_mb": 309.140625,
           "runs": 5,
           "found": {
             "import(no-cycle)": 505
