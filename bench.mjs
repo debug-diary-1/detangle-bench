@@ -81,6 +81,15 @@ const TOOLS = [
     found: (out) => ({ cycles: JSON.parse(out).length }),
   },
   {
+    name: "oxlint import/no-cycle",
+    runs: 5,
+    // Only import/no-cycle (configs/oxlint.json), on every core, as oxlint
+    // runs by default. It finds each file's tsconfig; the corpus's own oxlint
+    // configs, if any, are ignored.
+    cmd: (c) => [bin("oxlint"), "--config", path.join(here, "configs/oxlint.json"), "--disable-nested-config", "--tsconfig", c.tsconfig, "--format", "json", c.dir],
+    found: (out) => counts(JSON.parse(out).diagnostics, (d) => d.code ?? "parse error"),
+  },
+  {
     name: "ESLint import/no-cycle",
     runs: 3,
     // One run on a big corpus: VS Code takes minutes.
@@ -232,5 +241,5 @@ console.log(`results: ${path.relative(here, file)}`);
 function versions() {
   const lock = JSON.parse(fs.readFileSync(path.join(here, "package-lock.json"), "utf8")).packages;
   const v = (p) => lock[`node_modules/${p}`]?.version;
-  return Object.fromEntries(["detangle", "dependency-cruiser", "madge", "eslint", "eslint-plugin-import", "eslint-import-resolver-typescript", "typescript"].map((p) => [p, v(p)]));
+  return Object.fromEntries(["detangle", "dependency-cruiser", "madge", "oxlint", "eslint", "eslint-plugin-import", "eslint-import-resolver-typescript", "typescript"].map((p) => [p, v(p)]));
 }

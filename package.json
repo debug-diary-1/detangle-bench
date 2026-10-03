@@ -15,6 +15,7 @@
     "eslint-import-resolver-typescript": "4.4.5",
     "eslint-plugin-import": "2.32.0",
     "madge": "8.0.0",
+    "oxlint": "1.86.0",
     "typescript": "5.9.3"
   }
 }
