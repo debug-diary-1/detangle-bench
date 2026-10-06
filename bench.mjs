@@ -7,6 +7,7 @@
 //   node bench.mjs --corpus excalidraw    # one corpus
 //   node bench.mjs --tools detangle,madge # some tools
 //   node bench.mjs --runs 10              # runs per tool (default below)
+//   node bench.mjs --force                # measure even if the machine is busy
 //
 // The corpora (corpora.json) are cloned at pinned commits into corpora/, and
 // their npm dependencies installed, so imports of packages resolve. Each
@@ -40,6 +41,7 @@ const opt = (name) => {
 };
 const only = opt("corpus")?.split(",") ?? Object.keys(corpora);
 const runsOverride = opt("runs") && Number(opt("runs"));
+const force = args.includes("--force");
 
 // ---------------------------------------------------------------- tools
 
@@ -170,15 +172,119 @@ const median = (xs) => {
   return s.length ? s[s.length >> 1] : null;
 };
 
+// ---------------------------------------------------------------- preflight
+
+// Numbers are only worth keeping from a quiet machine: on battery, macOS
+// throttles (one run was ~6x slow); a busy app or system jobs catching up
+// after waking take cores (detangle 0.259 s instead of 0.175 s). So before
+// measuring, check power, load and the top CPU users, and wait for them to
+// clear. BENCH_PREFLIGHT_LOAD and BENCH_PREFLIGHT_CPU change the thresholds.
+const LOAD_MAX = Number(process.env.BENCH_PREFLIGHT_LOAD ?? 2.5);
+const CPU_MAX = Number(process.env.BENCH_PREFLIGHT_CPU ?? 30);
+const RECHECK_S = 10;
+const WAIT_S = 5 * 60;
+
+/** "AC", "battery", or null where it can't tell (or there's no battery). */
+function power() {
+  try {
+    if (mac) {
+      const out = execFileSync("pmset", ["-g", "batt"], { encoding: "utf8" });
+      return /'Battery Power'/.test(out) ? "battery" : /'AC Power'/.test(out) ? "AC" : null;
+    }
+    if (process.platform === "linux") {
+      const dir = "/sys/class/power_supply";
+      const read = (s, f) => fs.readFileSync(path.join(dir, s, f), "utf8").trim();
+      const mains = fs.readdirSync(dir).filter((s) => { try { return read(s, "type") === "Mains"; } catch { return false; } });
+      if (!mains.length) return null;
+      return mains.some((s) => read(s, "online") === "1") ? "AC" : "battery";
+    }
+  } catch {}
+  return null;
+}
+
+/** Processes by CPU use, most first, apart from this one and its children. */
+function topProcesses() {
+  if (!mac && process.platform !== "linux") return [];
+  let out;
+  try {
+    out = mac
+      ? execFileSync("ps", ["-Ao", "pid=,ppid=,pcpu=,comm=", "-r"], { encoding: "utf8" })
+      : execFileSync("ps", ["-eo", "pid=,ppid=,pcpu=,comm=", "--sort=-pcpu"], { encoding: "utf8" });
+  } catch {
+    return [];
+  }
+  const procs = out.split("\n").map((l) => l.trim().match(/^(\d+)\s+(\d+)\s+([\d.]+)\s+(.+)$/)).filter(Boolean)
+    .map(([, pid, ppid, pcpu, comm]) => ({ pid: Number(pid), ppid: Number(ppid), pcpu: Number(pcpu), comm }));
+  const parent = new Map(procs.map((p) => [p.pid, p.ppid]));
+  const ours = (pid) => {
+    for (let i = 0; pid > 1 && i < 64; i++, pid = parent.get(pid)) if (pid === process.pid) return true;
+    return false;
+  };
+  return procs.filter((p) => !ours(p.pid)).map((p) => ({ name: displayName(p.comm), pcpu: p.pcpu, system: systemProcess(p.comm) }));
+}
+
+// macOS's comm is the executable's path: name an app by its outermost .app
+// ("Perplexity", not "Perplexity Helper (Renderer)"), anything else by file.
+const displayName = (comm) => comm.match(/([^/]+)\.app\//)?.[1] ?? path.basename(comm);
+const systemProcess = (comm) => mac && /^\/(System|usr|sbin|bin|Library\/Apple)\//.test(comm);
+
+function checkConditions() {
+  const procs = topProcesses();
+  const c = { power: power(), load: Math.round(os.loadavg()[0] * 100) / 100, load_max: LOAD_MAX, top: procs.slice(0, 5) };
+  const problems = [];
+  if (c.power === "battery") problems.push("on battery power, which throttles the CPU: plug in");
+  if (c.load > LOAD_MAX) problems.push(`load average ${c.load.toFixed(2)} (over ${LOAD_MAX}): wait for it to settle`);
+  // One line per program: an app's helpers or a build's rustc processes add up.
+  const busy = new Map();
+  for (const p of procs.filter((p) => p.pcpu > CPU_MAX)) {
+    const b = busy.get(p.name) ?? { ...p, pcpu: 0 };
+    b.pcpu += p.pcpu;
+    busy.set(p.name, b);
+  }
+  for (const p of busy.values()) {
+    problems.push(p.system ? `wait for ${p.name} to settle (${p.pcpu.toFixed(0)}% CPU)` : `quit ${p.name} (${p.pcpu.toFixed(0)}% CPU)`);
+  }
+  return { ...c, problems };
+}
+
+async function preflight() {
+  const start = Date.now();
+  let c = checkConditions();
+  if (c.problems.length && force) {
+    console.error(`warning: measuring anyway (--force); the machine isn't quiet:\n${c.problems.map((p) => `  - ${p}`).join("\n")}`);
+  } else if (c.problems.length) {
+    console.error(`The machine isn't quiet enough to measure:\n${c.problems.map((p) => `  - ${p}`).join("\n")}`);
+    console.error(`Checking again every ${RECHECK_S} s for up to ${WAIT_S / 60} minutes (--force to measure anyway).`);
+    while (c.problems.length) {
+      if (Date.now() - start >= WAIT_S * 1000) {
+        console.error(`Still not quiet after ${WAIT_S / 60} minutes:\n${c.problems.map((p) => `  - ${p}`).join("\n")}`);
+        process.exit(1);
+      }
+      await new Promise((r) => setTimeout(r, RECHECK_S * 1000));
+      c = checkConditions();
+      const waited = Math.round((Date.now() - start) / 1000);
+      console.error(c.problems.length ? `  ${waited} s: ${c.problems.join("; ")}` : `  ${waited} s: quiet now`);
+    }
+  }
+  const { power: pw, load, load_max, top, problems } = c;
+  return { at: new Date().toISOString(), power: pw, load, load_max, top: top.map(({ name, pcpu }) => ({ name, pcpu })), problems, forced: force && problems.length > 0, waited_s: Math.round((Date.now() - start) / 1000) };
+}
+
 // ---------------------------------------------------------------- run
 
 const machine = `${os.cpus()[0].model.trim()} (${os.cpus().length} cores, ${Math.round(os.totalmem() / 2 ** 30)} GB, ${os.type()} ${os.release()}), Node ${process.version}`;
 console.error(`machine: ${machine}`);
 const results = { repos: {}, machine, date: new Date().toISOString().slice(0, 10), versions: versions() };
 
+// Clone and install first, so their work is done before the preflight.
+for (const name of only) if (!corpora[name]) throw new Error(`unknown corpus ${name}; see corpora.json`);
+const prepared = Object.fromEntries(only.map((name) => [name, prepare(name)]));
+const conditions = await preflight();
+console.error(`conditions: power ${conditions.power ?? "unknown"}, load ${conditions.load}, top ${conditions.top.map((p) => `${p.name} ${p.pcpu}%`).join(", ") || "unknown"}${conditions.forced ? " (forced)" : ""}`);
+results.conditions = [{ ...conditions, corpora: only, tools: tools.map((t) => t.name) }];
+
 for (const name of only) {
-  if (!corpora[name]) throw new Error(`unknown corpus ${name}; see corpora.json`);
-  const c = prepare(name);
+  const c = prepared[name];
   const rows = [];
   for (const tool of tools) {
     const big = name === "vscode";
@@ -217,6 +323,8 @@ fs.mkdirSync(path.join(here, "results"), { recursive: true });
 const file = path.join(here, "results", `${results.date}-${os.platform()}-${os.arch()}.json`);
 if (fs.existsSync(file)) {
   const before = JSON.parse(fs.readFileSync(file, "utf8"));
+  // Each run's conditions are kept, in order, with what it measured.
+  results.conditions = [...(before.conditions ?? []), ...results.conditions];
   for (const [name, r] of Object.entries(before.repos)) {
     const now = results.repos[name];
     if (!now) results.repos[name] = r;
