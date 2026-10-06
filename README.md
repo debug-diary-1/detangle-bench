@@ -9,6 +9,7 @@ node bench.mjs                          # everything (~20 minutes, mostly ESLint
 node bench.mjs --corpus excalidraw      # one repository
 node bench.mjs --tools detangle         # one tool (prefix match)
 node bench.mjs --runs 10                # runs per tool, instead of the defaults
+node bench.mjs --force                  # measure even if the machine is busy
 ```
 
 The first run clones the repositories into `corpora/` and installs their npm dependencies (without install scripts), so imports of packages resolve for every tool. It prints a Markdown table and writes `results/<date>-<os>-<arch>.json`.
@@ -68,7 +69,7 @@ Apple M3 Pro (12 cores, 36 GB, macOS), Node 24, background apps paused, 2026-10-
 - Wall time is measured around the process; CPU time (user + system) and peak memory come from `/usr/bin/time` (`-l` on macOS, GNU `time` on Linux).
 - detangle is timed as its native binary, from the platform package npm installs. The `detangle` command that npm links (and `npx detangle`) is a small Node.js launcher for that binary, which adds Node's startup, about 25-30 ms on this machine, to every run.
 - The table shows medians: 30 runs for detangle, 5 for dependency-cruiser and oxlint, 3 for madge and ESLint, and 1 for ESLint on VS Code, which takes minutes.
-- **Run it on a quiet machine.** Background work (a sync client, a browser, an indexer) moves the numbers by tens of percent; detangle's sub-second runs are the most sensitive. The machine is printed with the results.
+- **Run it on a quiet machine.** Background work (a sync client, a browser, an indexer) moves the numbers by tens of percent; detangle's sub-second runs are the most sensitive. So before measuring, `bench.mjs` checks that the machine is on AC power (macOS throttles on battery), that the 1-minute load average is at most 2.5, and that no other process is using more than 30% of a core. If not, it says what to do ("plug in", "quit Perplexity (95% CPU)", "wait for logd to settle") and checks again every 10 seconds for up to 5 minutes, then gives up. `--force` measures anyway, with a warning. What it saw (power, load, the top processes, whether it was forced) goes into the results file under `conditions`, and the machine is printed with the results.
 
 ## What "found" means
 
