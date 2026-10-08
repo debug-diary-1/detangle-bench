@@ -1,0 +1,153 @@
+{
+  "repos": {
+    "arktype": {
+      "label": "ArkType",
+      "commit": "1ca8ceaf48d327129361416a28ebb4a8e85c20b2",
+      "tools": [
+        {
+          "name": "detangle",
+          "wall": 0.01868745900000795,
+          "cpu": 0.07,
+          "cycles": 230022824,
+          "rss_mb": 28.359375,
+          "runs": 5,
+          "found": {
+            "not-to-unresolvable": 3,
+            "no-circular": 49,
+            "no-orphans": 6
+          }
+        },
+        {
+          "name": "detangle (cached)",
+          "wall": 0.01359420800000953,
+          "cpu": 0.02,
+          "cycles": 108120506,
+          "rss_mb": 20.75,
+          "runs": 5,
+          "found": {
+            "not-to-unresolvable": 3,
+            "no-circular": 49,
+            "no-orphans": 6
+          }
+        },
+        {
+          "name": "dependency-cruiser",
+          "wall": 0.6352042499999953,
+          "cpu": 1.04,
+          "cycles": 3914873643,
+          "rss_mb": 376.59375,
+          "runs": 5,
+          "found": {
+            "not-to-unresolvable": 687,
+            "no-circular": 622,
+            "no-orphans": 6
+          }
+        },
+        {
+          "name": "dependency-cruiser (cached)",
+          "wall": 0.3144373749999941,
+          "cpu": 0.36,
+          "cycles": 1272622126,
+          "rss_mb": 192.546875,
+          "runs": 5,
+          "found": {
+            "not-to-unresolvable": 687,
+            "no-circular": 622,
+            "no-orphans": 6
+          }
+        },
+        {
+          "name": "madge --circular",
+          "wall": 1.5677018329999992,
+          "cpu": 2.56,
+          "cycles": 9528319542,
+          "rss_mb": 504.828125,
+          "runs": 5,
+          "found": {
+            "cycles": 348
+          }
+        },
+        {
+          "name": "oxlint import/no-cycle",
+          "wall": 0.27291320799999813,
+          "cpu": 1.6,
+          "cycles": 5178393797,
+          "rss_mb": 384.59375,
+          "runs": 5,
+          "found": {
+            "import(no-cycle)": 49,
+            "parse error": 1
+          }
+        },
+        {
+          "name": "ESLint import/no-cycle",
+          "wall": 5.302044624999995,
+          "cpu": 9.01,
+          "cycles": 33062134450,
+          "rss_mb": 1256.109375,
+          "runs": 5,
+          "found": {
+            "import/no-cycle": 36
+          }
+        }
+      ]
+    }
+  },
+  "machine": "Apple M3 Pro (12 cores, 36 GB, Darwin 25.6.0), Node v24.14.1",
+  "date": "2026-10-08",
+  "versions": {
+    "detangle": "0.2.7",
+    "dependency-cruiser": "18.4.0",
+    "madge": "8.0.0",
+    "oxlint": "1.86.0",
+    "eslint": "9.39.5",
+    "eslint-plugin-import": "2.32.0",
+    "eslint-import-resolver-typescript": "4.4.5",
+    "typescript": "5.9.3"
+  },
+  "conditions": [
+    {
+      "at": "2026-10-08T06:04:52.392Z",
+      "power": "AC",
+      "load": 2.25,
+      "load_max": 2.5,
+      "top": [
+        {
+          "name": "codex",
+          "pcpu": 8.7
+        },
+        {
+          "name": "claude",
+          "pcpu": 7.3
+        },
+        {
+          "name": "WhatsApp",
+          "pcpu": 6.2
+        },
+        {
+          "name": "Google Chrome",
+          "pcpu": 3.3
+        },
+        {
+          "name": "WindowServer",
+          "pcpu": 2.9
+        }
+      ],
+      "problems": [],
+      "forced": false,
+      "waited_s": 81,
+      "corpora": [
+        "arktype"
+      ],
+      "tools": [
+        "detangle",
+        "detangle (cached)",
+        "dependency-cruiser",
+        "dependency-cruiser (cached)",
+        "madge --circular",
+        "oxlint import/no-cycle",
+        "ESLint import/no-cycle"
+      ]
+    }
+  ]
+}

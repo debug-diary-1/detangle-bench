@@ -12,5 +12,12 @@
     "commit": "afed9e6e27dd1cd5cc52857a405f7bea5312d813",
     "dir": ".",
     "tsconfig": "tsconfig.json"
+  },
+  "arktype": {
+    "label": "ArkType",
+    "repo": "https://github.com/arktypeio/arktype.git",
+    "commit": "1ca8ceaf48d327129361416a28ebb4a8e85c20b2",
+    "dir": ".",
+    "tsconfig": "tsconfig.json"
   }
 }

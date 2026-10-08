@@ -126,8 +126,9 @@ function prepare(name) {
   if (!fs.existsSync(path.join(dir, "node_modules"))) {
     // Packages only, no install scripts (VS Code's build native modules).
     console.error(`installing ${name}'s dependencies…`);
-    const lock = fs.existsSync(path.join(dir, "yarn.lock")) ? "yarn" : "npm";
-    if (lock === "yarn") execFileSync("npx", ["--yes", "yarn@1", "install", "--frozen-lockfile", "--ignore-scripts", "--silent"], { cwd: dir, stdio: "inherit" });
+    const lock = fs.existsSync(path.join(dir, "yarn.lock")) ? "yarn" : fs.existsSync(path.join(dir, "pnpm-lock.yaml")) ? "pnpm" : "npm";
+    if (lock === "pnpm") execFileSync("npx", ["--yes", JSON.parse(fs.readFileSync(path.join(dir, "package.json"), "utf8")).packageManager ?? "pnpm", "install", "--frozen-lockfile", "--ignore-scripts", "--reporter=silent"], { cwd: dir, stdio: "inherit" });
+    else if (lock === "yarn") execFileSync("npx", ["--yes", "yarn@1", "install", "--frozen-lockfile", "--ignore-scripts", "--silent"], { cwd: dir, stdio: "inherit" });
     else execFileSync("npm", ["ci", "--ignore-scripts", "--no-audit", "--no-fund", "--loglevel=error"], { cwd: dir, stdio: "inherit" });
   }
   return { ...c, name, root: dir, tsconfig: path.join(dir, c.tsconfig) };
