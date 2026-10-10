@@ -10,6 +10,7 @@ node bench.mjs --corpus excalidraw      # one repository
 node bench.mjs --tools detangle         # one tool (prefix match)
 node bench.mjs --runs 10                # runs per tool, instead of the defaults
 node bench.mjs --force                  # measure even if the machine is busy
+node site.mjs results/<file>.json ../tangle/site/index.html --size "456 modules, 2,057 imports"   # inject into the site (--size required for a new repo)
 ```
 
 The first run clones the repositories into `corpora/` and installs their npm dependencies (without install scripts), so imports of packages resolve for every tool. It prints a Markdown table and writes `results/<date>-<os>-<arch>.json`.
